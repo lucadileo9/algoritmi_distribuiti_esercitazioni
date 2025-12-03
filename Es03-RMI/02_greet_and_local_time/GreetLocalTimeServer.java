@@ -6,6 +6,10 @@ import java.rmi.server.UnicastRemoteObject;
 public class GreetLocalTimeServer extends UnicastRemoteObject implements GreetLocalTimeInterface {
     private static final long serialVersionUID = 1L;
 
+    private static final int PORT = 1099;
+    private static final String HOST = "localhost";
+    private static final String SERVICE_NAME = "GreetLocalTimeService";
+
     // Costruttore
     public GreetLocalTimeServer() throws RemoteException {
         super();
@@ -47,17 +51,17 @@ public class GreetLocalTimeServer extends UnicastRemoteObject implements GreetLo
             // 2. Crea o ottiene il Registry RMI sulla porta 1099 (default)
             Registry registry;
             try {
-                registry = LocateRegistry.createRegistry(1099);
-                System.out.println("✓ Registry RMI creato sulla porta 1099");
+                registry = LocateRegistry.createRegistry(PORT);
+                System.out.println("✓ Registry RMI creato sulla porta " + PORT);
             } catch (RemoteException e) {
-                registry = LocateRegistry.getRegistry(1099);
-                System.out.println("✓ Connesso al Registry RMI esistente sulla porta 1099");
+                registry = LocateRegistry.getRegistry(PORT);
+                System.out.println("✓ Connesso al Registry RMI esistente sulla porta " + PORT);
             }
 
             // 3. Registra l'oggetto remoto nel Registry con un nome
-            registry.rebind("GreetLocalTimeService", server);
+            registry.rebind(SERVICE_NAME, server);
 
-            System.out.println("✓ Servizio 'GreetLocalTimeService' registrato nel Registry");
+            System.out.println("✓ Servizio '" + SERVICE_NAME + "' registrato nel Registry");
             System.out.println("✓ Server RMI pronto per ricevere chiamate remote");
 
         } catch (Exception e) {

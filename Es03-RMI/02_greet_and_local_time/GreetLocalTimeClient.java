@@ -14,6 +14,11 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class GreetLocalTimeClient {
+    
+    public static final int PORT = 1099;
+    public static final String HOST = "localhost";
+    public static final String SERVICE_NAME = "GreetLocalTimeService";
+
     public static void main(String[] args) {
         // Intestazione
         System.out.println("=".repeat(50));
@@ -22,11 +27,11 @@ public class GreetLocalTimeClient {
 
         try {
             // 1. Si connette al Registry RMI sulla porta 1099 (default)
-            Registry registry = LocateRegistry.getRegistry(1099);
-            System.out.println("✓ Connesso al Registry RMI sulla porta 1099");
+            Registry registry = LocateRegistry.getRegistry(HOST, PORT);
+            System.out.println("✓ Connesso al Registry RMI sulla porta " + PORT);
             // 2. Ottiene il riferimento all'oggetto remoto
-            GreetLocalTimeInterface stub = (GreetLocalTimeInterface) registry.lookup("GreetLocalTimeService");
-            System.out.println("✓ Riferimento a 'GreetLocalTimeService' ottenuto");
+            GreetLocalTimeInterface stub = (GreetLocalTimeInterface) registry.lookup(SERVICE_NAME);
+            System.out.println("✓ Riferimento a '" + SERVICE_NAME + "' ottenuto");
             System.out.println("─".repeat(50));
 
             // 3. Invoca i metodi remoti greetUser() e getLocalTime() sull'oggetto remoto
