@@ -7,7 +7,6 @@ public class GreetLocalTimeServer extends UnicastRemoteObject implements GreetLo
     private static final long serialVersionUID = 1L;
 
     private static final int PORT = 1099;
-    private static final String HOST = "localhost";
     private static final String SERVICE_NAME = "GreetLocalTimeService";
 
     // Costruttore
