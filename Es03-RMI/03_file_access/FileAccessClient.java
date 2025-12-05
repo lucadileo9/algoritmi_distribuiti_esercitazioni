@@ -4,6 +4,7 @@ import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Scanner;
 
 /**
  * FileAccessClient - Client RMI per l'accesso ai file
@@ -37,18 +38,47 @@ public class FileAccessClient {
         System.out.println("CLIENT RMI - File Access");
         System.out.println("=".repeat(50));
 
-        // ========== CONFIGURAZIONE ==========
-        // Questi parametri definiscono:
-        // - Quale file leggere dal server
-        // - Dove salvare il file localmente
-        // - Quanti byte leggere
-        // In una seguente versione, questi potrebbero essere presi da input utente
+        // ========== INPUT DELL'UTENTE ==========
+        // Leggi i parametri da input invece di usarli hardcodati
+        Scanner scanner = new Scanner(System.in);
         
-        String remoteFileName = "input.txt";  // Nome file sul server RMI
-        String localFileName = "output.txt";  // Nome file locale (dove salvare)
-        long positionsToRead = 10;  // Numero di byte da leggere (0-9)
-
+        System.out.println("\n📝 Configurazione del client RMI\n");
+        
+        System.out.print("Inserisci il nome del file remoto (sul server): ");
+        String remoteFileName = scanner.nextLine().trim();
+        if (remoteFileName.isEmpty()) {
+            remoteFileName = "input.txt";
+            System.out.println("   (usando default: input.txt)");
+        }
+        
+        System.out.print("Inserisci il nome del file di output (locale): ");
+        String localFileName = scanner.nextLine().trim();
+        if (localFileName.isEmpty()) {
+            localFileName = "output.txt";
+            System.out.println("   (usando default: output.txt)");
+        }
+        
+        System.out.print("Quanti byte desideri leggere: ");
+        long positionsToRead;
         try {
+            positionsToRead = Long.parseLong(scanner.nextLine().trim());
+            if (positionsToRead <= 0) {
+                System.out.println("❌ Numero di byte deve essere positivo!");
+                System.out.println("   (usando default: 10)");
+                positionsToRead = 10;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Input non valido!");
+            System.out.println("   (usando default: 10)");
+            positionsToRead = 10;
+        }
+        
+        System.out.println("\n" + "─".repeat(50));
+        System.out.println("Parametri configurati:");
+        System.out.println("  • File remoto: " + remoteFileName);
+        System.out.println("  • File locale: " + localFileName);
+        System.out.println("  • Byte da leggere: " + positionsToRead);
+        System.out.println("─".repeat(50) + "\n");        try {
             // ========== STEP 1: CONNESSIONE AL REGISTRY RMI ==========
             // LocateRegistry.getRegistry(1099) si connette al Registry RMI
             // Il Registry è come un "telefono" che sa dove trovare i servizi
@@ -146,6 +176,10 @@ public class FileAccessClient {
             // Catch-all per eventuali altre eccezioni non previste
             System.err.println("❌ Errore nel client RMI: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            // ========== CHIUSURA DELLO SCANNER ==========
+            // Importante: chiudi lo scanner per liberare risorse (stdin)
+            scanner.close();
         }
     }
 }
