@@ -224,15 +224,5 @@ Local Time: 14:35:22.123456789
 
 ---
 
-## 🔧 Troubleshooting
-
-| Errore | Causa | Soluzione |
-|--------|-------|----------|
-| `ClassNotFoundException` | Esecuzione con `.class` | Usare `java GreetLocalTimeServer` senza estensione |
-| `ConnectException` | Server non avviato | Avviare il server prima del client |
-| `NotBoundException` | Nome servizio errato | Verificare che il nome corrisponda tra server e client |
-| `RemoteException` | Errore di rete | Verificare la connettività di rete |
-
----
 
 *Esercitazione per il corso di Algoritmi Distribuiti - Dicembre 2025*
